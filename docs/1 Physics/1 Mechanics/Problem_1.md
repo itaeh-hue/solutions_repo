@@ -198,6 +198,8 @@ plt.show()
 
 
 
+
+
 ### Limitations
 
 The idealized model described above does not account for air resistance, which may be significant in certain applications.
