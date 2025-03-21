@@ -71,7 +71,7 @@ To find *when* the projectile hits the ground, we set $y(t)=0$ (altitude zero):
 
 $$0=v_{0}\sin(\theta)t -\frac{1}{2}gt^2$$
 
-$$-\frac{1}{2}gt^2 + v_{0}\sin(\theta) = 0$$
+$$\frac{1}{2}gt^2 + v_{0}\sin(\theta) = 0$$
 
 Solving the quadratic equation:
 
@@ -97,9 +97,7 @@ $$\boxed{R=\frac{v_{0}^2\sin(2\theta) }{g}}$$
 
 - The range $R$ depends on the angle of projection $\theta$ through the sine function, which reaches its maximum at $90^\circ$. However, due to the sinusoidal nature of the $\sin⁡(2\theta)$, the optimal launch angle for maximum horizontal range is $45^\circ$.
 
-Here you can see a GeoGebra graph:
-
-https://www.geogebra.org/calculator/wqefjqxb
+[Here you can see my GeoGebra graph](https://www.geogebra.org/calculator/wqefjqxb)
 
 To find *when* the projectile hits the ground, we set $y(t)=0$ (altitude zero):
 
