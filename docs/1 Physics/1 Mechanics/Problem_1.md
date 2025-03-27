@@ -153,7 +153,9 @@ Launch time:
 
 $$t_{1}=\frac{v_{0}\sin(\theta)+\sqrt{ v_{0}^2\sin(\theta)^2 +2gh_{0} }}{g}$$
 
-When the projectile hits the ground: $$t_{2}=\frac{v_{0}\sin(\theta)-\sqrt{ v_{0}^2\sin(\theta)^2 +2gh_{0} }}{g}$$
+When the projectile hits the ground: 
+
+$$t_{2}=\frac{v_{0}\sin(\theta)-\sqrt{ v_{0}^2\sin(\theta)^2 +2gh_{0} }}{g}$$
 
 The horizontal range is then:
 
