@@ -166,35 +166,47 @@ Below is Python code that creates a graph illustrating the motion:
 import numpy as np
 import matplotlib.pyplot as plt
 
-def projectile_range(v0, angle, g=9.81):
-    """Calculate the range of a projectile."""
-    angle_rad = np.radians(angle)  # convert angle to radians
-    R = (v0**2 * np.sin(2 * angle_rad)) / g
-    return R
+def projectile_motion(v0, angle, g=9.81):
+    """Calculate the trajectory of a projectile."""
+    # Convert angle to radians
+    angle_rad = np.radians(angle)
 
-# parameters
+    # Time of flight
+    t_f = (2 * v0 * np.sin(angle_rad)) / g
+    # Time points for plotting
+    t = np.linspace(0, t_f, num=500)
+
+    # Calculate x and y positions
+    x = v0 * np.cos(angle_rad) * t
+    y = v0 * np.sin(angle_rad) * t - 0.5 * g * t**2
+    
+    return x, y
+
+# Parameters
 initial_velocity = 30  # m/s
-angles = np.linspace(0, 90, 90)  # Angles from 0° to 90°
+angles = [15, 30, 45, 60, 75]  # Selected launch angles (degrees)
 
-# Calculate ranges for different angles
-ranges = [projectile_range(initial_velocity, angle) for angle in angles]
-
-# Plotting
+# Setting up the plot
 plt.figure(figsize=(10, 6))
-plt.plot(angles, ranges, label='Range vs Launch Angle', color='b')
-plt.title('Projectile Range as a Function of Launch Angle')
-plt.xlabel('Angle of Projection (degrees)')
-plt.ylabel('Range (m)')
-plt.axvline(45, color='r', linestyle='--', label='Optimal Angle (45°)')
-plt.xlim(0, 90)
-plt.ylim(0, max(ranges) * 1.1)
+
+# Loop through each angle to plot the trajectory
+for angle in angles:
+    x, y = projectile_motion(initial_velocity, angle)
+    plt.plot(x, y, label=f'θ = {angle}°')
+
+# Customize the plot
+plt.title('Projectile Trajectories for Different Launch Angles')
+plt.xlabel('Horizontal Distance (m)')
+plt.ylabel('Vertical Distance (m)')
+plt.axhline(0, color='gray', lw=0.8)  # Ground line
+plt.axvline(0, color='gray', lw=0.8)  # Vertical line
+plt.xlim(0, 100)  # X-axis limit
+plt.ylim(0, 40)   # Y-axis limit
 plt.grid()
 plt.legend()
 plt.show()
 ```
-![plot](https://github.com/user-attachments/assets/7ef33de2-efbc-41c4-876b-8627743f451d)
-
-
+![plot](https://github.com/user-attachments/assets/18d2dad4-c2ef-4350-bef8-947afca9ef85)
 
 
 
