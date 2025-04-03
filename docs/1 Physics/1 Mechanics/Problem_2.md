@@ -165,6 +165,8 @@ plt.show()
 
 ## Exploring initial conditions of an underdamped pendulum 
 
+You can also use [this](https://www.myphysicslab.com/pendulum/pendulum-en.html) website to see demonstrations. These are not mine, but I think the resource is useful.
+
 ### Changing damping coefficient
 
 ```Python
