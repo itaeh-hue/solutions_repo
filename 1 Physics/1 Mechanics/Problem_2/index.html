@@ -54,6 +54,8 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#solving-differential-equation-of-a-damped-pendulum-for-small-angle-approximations">Solving differential equation of a damped pendulum for small-angle approximations</a>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="#no-damping">No damping</a>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="#exploring-initial-conditions-of-an-underdamped-pendulum">Exploring initial conditions of an underdamped pendulum</a>
 <ul>
 <li class="toctree-l4"><a class="reference internal" href="#changing-damping-coefficient">Changing damping coefficient</a>
@@ -290,6 +292,55 @@ r = \frac{-b\pm \sqrt{ b^2 -4\frac{g}{L} }}{2}
 </ul>
 </li>
 </ul>
+<p>No damping:</p>
+<h2 id="no-damping">No damping</h2>
+<pre><code class="language-Python">import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+g = 9.81  # acceleration due to gravity (m/s^2)
+L = 1.0   # length of the pendulum (m)
+
+# Time array
+t = np.linspace(0, 10, 500)
+
+# Underdamped case parameters (b^2 &gt; 4g/L)
+b_underdamped = 1.0
+omega_d_underdamped = np.sqrt(g / L - (b_underdamped / 2) ** 2)
+theta_underdamped = np.exp(-b_underdamped / 2 * t) * (np.cos(omega_d_underdamped * t) + np.sin(omega_d_underdamped * t))
+
+# Plotting
+plt.figure(figsize=(12, 8))
+
+# Underdamped
+plt.subplot(3, 1, 1)
+plt.plot(t, theta_underdamped, label='Underdamped', color='blue')
+plt.title('Underdamped Motion')
+plt.xlabel('Time (s)')
+plt.ylabel('Angle (radians)')
+plt.grid()
+plt.legend()
+
+# Underdamped case parameters (b^2 &gt; 4g/L)
+b_underdamped = 0
+omega_d_underdamped = np.sqrt(g / L - (b_underdamped / 2) ** 2)
+theta_underdamped = np.exp(-b_underdamped / 2 * t) * (np.cos(omega_d_underdamped * t) + np.sin(omega_d_underdamped * t))
+
+
+# No damping
+plt.subplot(3, 1, 2)
+plt.plot(t, theta_underdamped, label='Critically Damped', color='green')
+plt.title('Pendumum Motion with no Damping')
+plt.xlabel('Time (s)')
+plt.ylabel('Angle (radians)')
+plt.grid()
+plt.legend()
+
+# Adjust layout
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p><img alt="no_damping" src="https://github.com/user-attachments/assets/03fbae0e-eb2a-4ff6-899c-9f60b9d150e6"/></p>
 <p>Take a look at my Python demonstration:</p>
 <pre><code class="language-Python">import numpy as np
 import matplotlib.pyplot as plt
