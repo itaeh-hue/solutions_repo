@@ -345,3 +345,86 @@ plt.show()
 
 
 ![changing_length](https://github.com/user-attachments/assets/5c16d2d4-5f5d-44a8-b1a5-5755ea25063b)
+
+## Investigating forced pendulum
+
+
+```Python
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.integrate import odeint
+
+# Parameters
+g = 9.81      # acceleration due to gravity (m/s^2)
+L = 1.0       # length of the pendulum (m)
+A_resonance = 1.0  # amplitude of the driving force for resonance
+A_chaotic = 0.5     # reduced amplitude for chaotic case
+b = 0.1       # damping coefficient
+
+# Natural frequency
+omega_0 = np.sqrt(g / L)
+
+# Time values
+t = np.linspace(0, 30, 1000)  # Time from 0 to 30 seconds
+
+# Differential equations for the driven pendulum
+def model(y, t, A, b, omega):
+    theta, omega = y
+    dtheta_dt = omega
+    domega_dt = -b * omega - (g / L) * np.sin(theta) + A * np.cos(omega * t)
+    return [dtheta_dt, domega_dt]
+
+# Case 1: Resonance
+omega_resonance = omega_0  # Driving frequency at resonance
+initial_conditions = [0.1, 0]  # Starting angle and angular velocity
+solution_resonance = odeint(model, initial_conditions, t, args=(A_resonance, b, omega_resonance))
+theta_resonance = solution_resonance[:, 0]
+omega_resonance_vals = solution_resonance[:, 1]
+
+# Case 2: Chaotic Motion
+omega_chaotic = 1.5 * omega_0  # Non-harmonic driving frequency
+initial_conditions = [0.1, 0]  # Same starting angle and velocity for comparison
+solution_chaotic = odeint(model, initial_conditions, t, args=(A_chaotic, b, omega_chaotic))
+theta_chaotic = solution_chaotic[:, 0]
+omega_chaotic_vals = solution_chaotic[:, 1]
+
+# Plotting
+fig, ax = plt.subplots(2, 2, figsize=(12, 8))
+
+# Resonance plot
+ax[0, 0].plot(t, theta_resonance, color='blue')
+ax[0, 0].set_title('Resonance Case')
+ax[0, 0].set_xlabel('Time (s)')
+ax[0, 0].set_ylabel('Angular Displacement (radians)')
+ax[0, 0].grid()
+
+# Chaos plot
+ax[0, 1].plot(t, theta_chaotic, color='red')
+ax[0, 1].set_title('Chaotic Case')
+ax[0, 1].set_xlabel('Time (s)')
+ax[0, 1].set_ylabel('Angular Displacement (radians)')
+ax[0, 1].grid()
+
+# Phase Diagrams
+# Resonance Phase Diagram
+ax[1, 0].plot(theta_resonance[:-1], omega_resonance_vals[:-1], color='blue')
+ax[1, 0].set_title('Resonance Phase Diagram')
+ax[1, 0].set_xlabel('Angular Position (radians)')
+ax[1, 0].set_ylabel('Angular Velocity (rad/s)')
+ax[1, 0].grid()
+
+# Chaos Phase Diagram
+ax[1, 1].plot(theta_chaotic[:-1], omega_chaotic_vals[:-1], color='red')
+ax[1, 1].set_title('Chaotic Phase Diagram')
+ax[1, 1].set_xlabel('Angular Position (radians)')
+ax[1, 1].set_ylabel('Angular Velocity (rad/s)')
+ax[1, 1].grid()
+
+plt.tight_layout()
+plt.show()
+```
+
+
+
+![driven](https://github.com/user-attachments/assets/2ecf5729-47b0-40e3-a77f-6c100b41798a)
+
