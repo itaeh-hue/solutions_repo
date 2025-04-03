@@ -98,9 +98,9 @@ Roots and behavior:
 	 - Result: Two complex conjugate roots, leading to a non-oscillatory return toward equilibrium. The system takes longer to return than in the critically damped case.
 	 - Here, the pendulum slowly returns to its resting position without any oscillations, typically taking a longer time to settle compared to the critically damped case. For example, a pendulum that is heavily damped (like a long jump rope acting as a pendulum) that gently settles down without swinging back and forth.
 
-No damping:
-
 ## No damping
+
+Below there is a diagram comparing three cases: underdamped pendulum motion, motion with no damping, and critically damped motion: 
 
 ```Python
 import numpy as np
@@ -113,16 +113,25 @@ L = 1.0   # length of the pendulum (m)
 # Time array
 t = np.linspace(0, 10, 500)
 
-# Underdamped case parameters (b^2 > 4g/L)
-b_underdamped = 1.0
+# 1. Underdamped case parameters (b > 0, b^2 < 4g/L)
+b_underdamped = 1.0  # Damping Coefficient (low but positive)
 omega_d_underdamped = np.sqrt(g / L - (b_underdamped / 2) ** 2)
-theta_underdamped = np.exp(-b_underdamped / 2 * t) * (np.cos(omega_d_underdamped * t) + np.sin(omega_d_underdamped * t))
+theta_underdamped = np.exp(-b_underdamped / 2 * t) * np.cos(omega_d_underdamped * t)
 
-# Plotting
-plt.figure(figsize=(12, 8))
+# 2. No Damping case parameters (b = 0)
+b_no_damping = 0.0  # No Damping
+omega_no_damping = np.sqrt(g / L)
+theta_no_damping = np.cos(omega_no_damping * t)  # Simple harmonic motion
 
-# Underdamped
-plt.subplot(3, 1, 1)
+# 3. Critically Damped case parameters (b^2 = 4g/L)
+b_critical = 2.0 * np.sqrt(g / L)  # Adjusted for critical damping
+theta_critical = (1 + b_critical*t) * np.exp(-b_critical / 2 * t)  # Critically damped response
+
+# Create plots
+plt.figure(figsize=(12, 10))
+
+# Underdamped Motion Plot
+plt.subplot(3, 2, 1)
 plt.plot(t, theta_underdamped, label='Underdamped', color='blue')
 plt.title('Underdamped Motion')
 plt.xlabel('Time (s)')
@@ -130,31 +139,59 @@ plt.ylabel('Angle (radians)')
 plt.grid()
 plt.legend()
 
-# Underdamped case parameters (b^2 > 4g/L)
-b_underdamped = 0
-omega_d_underdamped = np.sqrt(g / L - (b_underdamped / 2) ** 2)
-theta_underdamped = np.exp(-b_underdamped / 2 * t) * (np.cos(omega_d_underdamped * t) + np.sin(omega_d_underdamped * t))
+# Underdamped Phase Diagram
+plt.subplot(3, 2, 2)
+plt.plot(theta_underdamped[:-1], np.diff(theta_underdamped) / np.diff(t), color='blue')
+plt.title('Underdamped Phase Diagram')
+plt.xlabel('Angular Position (radians)')
+plt.ylabel('Angular Velocity (rad/s)')
+plt.grid()
 
-
-# No damping
-plt.subplot(3, 1, 2)
-plt.plot(t, theta_underdamped, label='Critically Damped', color='green')
-plt.title('Pendumum Motion with no Damping')
+# No Damping Motion Plot
+plt.subplot(3, 2, 3)
+plt.plot(t, theta_no_damping, label='No Damping', color='green')
+plt.title('Pendulum Motion with No Damping')
 plt.xlabel('Time (s)')
 plt.ylabel('Angle (radians)')
 plt.grid()
 plt.legend()
 
+# No Damping Phase Diagram
+plt.subplot(3, 2, 4)
+plt.plot(theta_no_damping[:-1], np.diff(theta_no_damping) / np.diff(t), color='green')
+plt.title('No Damping Phase Diagram')
+plt.xlabel('Angular Position (radians)')
+plt.ylabel('Angular Velocity (rad/s)')
+plt.grid()
+
+# Critically Damped Motion Plot
+plt.subplot(3, 2, 5)
+plt.plot(t, theta_critical, label='Critically Damped', color='orange')
+plt.title('Critically Damped Motion')
+plt.xlabel('Time (s)')
+plt.ylabel('Angle (radians)')
+plt.grid()
+plt.legend()
+
+# Critically Damped Phase Diagram
+plt.subplot(3, 2, 6)
+plt.plot(theta_critical[:-1], np.diff(theta_critical) / np.diff(t), color='orange')
+plt.title('Critically Damped Phase Diagram')
+plt.xlabel('Angular Position (radians)')
+plt.ylabel('Angular Velocity (rad/s)')
+plt.grid()
+
 # Adjust layout
 plt.tight_layout()
 plt.show()
 ```
-![no_damping](https://github.com/user-attachments/assets/03fbae0e-eb2a-4ff6-899c-9f60b9d150e6)
+![no_damping](https://github.com/user-attachments/assets/8c0d4367-fec7-43d3-97e9-56706f6a82c0)
 
 
 
+## Underdamped, Critically Damped, and Overdamped
 
- Take a look at my Python demonstration:
+The next diagram compares three cases: underdamped, critically damped, and overdamped motion:
 
 ```Python
 import numpy as np
@@ -170,7 +207,7 @@ t = np.linspace(0, 10, 500)
 # Underdamped case parameters (b^2 > 4g/L)
 b_underdamped = 1.0
 omega_d_underdamped = np.sqrt(g / L - (b_underdamped / 2) ** 2)
-theta_underdamped = np.exp(-b_underdamped / 2 * t) * (np.cos(omega_d_underdamped * t) + np.sin(omega_d_underdamped * t))
+theta_underdamped = np.exp(-b_underdamped / 2 * t) * np.cos(omega_d_underdamped * t)
 
 # Critically damped case parameters (b^2 = 4g/L)
 b_critically_damped = 2 * np.sqrt(g / L)
@@ -179,13 +216,19 @@ theta_critically_damped = np.exp(-b_critically_damped / 2 * t) * (1 + (b_critica
 # Overdamped case parameters (b^2 < 4g/L)
 b_overdamped = 3.0  # Choose a value greater than 2*sqrt(g/L)
 omega_0_overdamped = np.sqrt((b_overdamped / 2) ** 2 - g / L)
-theta_overdamped = np.exp(-b_overdamped / 2 * t) * (np.cosh(omega_0_overdamped * t) - (b_overdamped / (2*omega_0_overdamped)) * np.sinh(omega_0_overdamped * t))
+theta_overdamped = np.exp(-b_overdamped / 2 * t) * (np.cosh(omega_0_overdamped * t) - (b_overdamped / (2 * omega_0_overdamped)) * np.sinh(omega_0_overdamped * t))
+
+# Calculate angular velocities for the phase diagrams
+omega_underdamped = -b_underdamped / 2 * theta_underdamped - (g / L) * np.sin(theta_underdamped)
+omega_critically_damped = np.diff(theta_critically_damped) / np.diff(t)  # Numerical derivative
+omega_critically_damped = np.append(omega_critically_damped, omega_critically_damped[-1])  # Append last value for length compatibility
+omega_overdamped = -b_overdamped / 2 * theta_overdamped + omega_0_overdamped * np.cosh(omega_0_overdamped * t) 
 
 # Plotting
-plt.figure(figsize=(12, 8))
+plt.figure(figsize=(12, 12))
 
 # Underdamped
-plt.subplot(3, 1, 1)
+plt.subplot(3, 2, 1)
 plt.plot(t, theta_underdamped, label='Underdamped', color='blue')
 plt.title('Underdamped Motion')
 plt.xlabel('Time (s)')
@@ -193,8 +236,16 @@ plt.ylabel('Angle (radians)')
 plt.grid()
 plt.legend()
 
+# Underdamped Phase Diagram
+plt.subplot(3, 2, 2)
+plt.plot(theta_underdamped[:-1], omega_underdamped[:-1], color='blue')
+plt.title('Underdamped Phase Diagram')
+plt.xlabel('Angular Position (radians)')
+plt.ylabel('Angular Velocity (rad/s)')
+plt.grid()
+
 # Critically Damped
-plt.subplot(3, 1, 2)
+plt.subplot(3, 2, 3)
 plt.plot(t, theta_critically_damped, label='Critically Damped', color='orange')
 plt.title('Critically Damped Motion')
 plt.xlabel('Time (s)')
@@ -202,8 +253,16 @@ plt.ylabel('Angle (radians)')
 plt.grid()
 plt.legend()
 
+# Critically Damped Phase Diagram
+plt.subplot(3, 2, 4)
+plt.plot(theta_critically_damped[:-1], omega_critically_damped[:-1], color='orange')
+plt.title('Critically Damped Phase Diagram')
+plt.xlabel('Angular Position (radians)')
+plt.ylabel('Angular Velocity (rad/s)')
+plt.grid()
+
 # Overdamped
-plt.subplot(3, 1, 3)
+plt.subplot(3, 2, 5)
 plt.plot(t, theta_overdamped, label='Overdamped', color='green')
 plt.title('Overdamped Motion')
 plt.xlabel('Time (s)')
@@ -211,12 +270,20 @@ plt.ylabel('Angle (radians)')
 plt.grid()
 plt.legend()
 
+# Overdamped Phase Diagram
+plt.subplot(3, 2, 6)
+plt.plot(theta_overdamped[:-1], omega_overdamped[:-1], color='green')
+plt.title('Overdamped Phase Diagram')
+plt.xlabel('Angular Position (radians)')
+plt.ylabel('Angular Velocity (rad/s)')
+plt.grid()
+
 # Adjust layout
 plt.tight_layout()
 plt.show()
 ```
+![damped](https://github.com/user-attachments/assets/eafa738e-02bb-403b-87e4-058e2aae4807)
 
- ![damped](https://github.com/user-attachments/assets/de76576f-b96c-4199-a60d-d681c5367afe)
 
 
 ## Exploring initial conditions of an underdamped pendulum 
