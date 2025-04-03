@@ -98,6 +98,62 @@ Roots and behavior:
 	 - Result: Two complex conjugate roots, leading to a non-oscillatory return toward equilibrium. The system takes longer to return than in the critically damped case.
 	 - Here, the pendulum slowly returns to its resting position without any oscillations, typically taking a longer time to settle compared to the critically damped case. For example, a pendulum that is heavily damped (like a long jump rope acting as a pendulum) that gently settles down without swinging back and forth.
 
+No damping:
+
+## No damping
+
+```Python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Constants
+g = 9.81  # acceleration due to gravity (m/s^2)
+L = 1.0   # length of the pendulum (m)
+
+# Time array
+t = np.linspace(0, 10, 500)
+
+# Underdamped case parameters (b^2 > 4g/L)
+b_underdamped = 1.0
+omega_d_underdamped = np.sqrt(g / L - (b_underdamped / 2) ** 2)
+theta_underdamped = np.exp(-b_underdamped / 2 * t) * (np.cos(omega_d_underdamped * t) + np.sin(omega_d_underdamped * t))
+
+# Plotting
+plt.figure(figsize=(12, 8))
+
+# Underdamped
+plt.subplot(3, 1, 1)
+plt.plot(t, theta_underdamped, label='Underdamped', color='blue')
+plt.title('Underdamped Motion')
+plt.xlabel('Time (s)')
+plt.ylabel('Angle (radians)')
+plt.grid()
+plt.legend()
+
+# Underdamped case parameters (b^2 > 4g/L)
+b_underdamped = 0
+omega_d_underdamped = np.sqrt(g / L - (b_underdamped / 2) ** 2)
+theta_underdamped = np.exp(-b_underdamped / 2 * t) * (np.cos(omega_d_underdamped * t) + np.sin(omega_d_underdamped * t))
+
+
+# No damping
+plt.subplot(3, 1, 2)
+plt.plot(t, theta_underdamped, label='Critically Damped', color='green')
+plt.title('Pendumum Motion with no Damping')
+plt.xlabel('Time (s)')
+plt.ylabel('Angle (radians)')
+plt.grid()
+plt.legend()
+
+# Adjust layout
+plt.tight_layout()
+plt.show()
+```
+![no_damping](https://github.com/user-attachments/assets/03fbae0e-eb2a-4ff6-899c-9f60b9d150e6)
+
+
+
+
  Take a look at my Python demonstration:
 
 ```Python
