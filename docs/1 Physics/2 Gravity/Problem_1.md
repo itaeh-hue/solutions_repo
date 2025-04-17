@@ -197,3 +197,6 @@ ani = animation.FuncAnimation(fig, update, frames=num_frames, interval=50, blit=
 
 plt.show()
 ```
+![orbits](https://github.com/user-attachments/assets/c215dd42-a03e-4fdb-be02-761ec0d88ea1)
+
+
