@@ -58,6 +58,20 @@
 </li>
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#first-cosmic-velocity-orbital-velocity">First Cosmic Velocity (Orbital Velocity)</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#second-cosmic-velocity-escape-velocity">Second Cosmic Velocity (Escape Velocity)</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#third-cosmic-velocity">Third Cosmic Velocity</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#mathematical-derivation-and-parameters">Mathematical Derivation and Parameters</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deriving-the-first-cosmic-velocity">Deriving the First Cosmic Velocity</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#deriving-the-second-cosmic-velocity">Deriving the Second Cosmic Velocity</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#parameters">Parameters</a>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_3/">Problem 3</a>
@@ -171,7 +185,263 @@
 </div>
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
-<h1 id="problem-2">Problem 2</h1>
+<h2 id="definition-of-cosmic-velocities">Definition of Cosmic velocities</h2>
+<h3 id="first-cosmic-velocity-orbital-velocity">First Cosmic Velocity (Orbital Velocity)</h3>
+<blockquote>
+<p>The <strong>First Cosmic Velocity</strong>, also known as the <strong>Orbital Velocity</strong>, is the minimum velocity required for an object to maintain a stable orbit around a celestial body without falling back to the surface. An object with orbital velocity moves in a circular path under the influence of gravity. </p>
+</blockquote>
+<p>The formula for the Orbital Velocity <span class="arithmatex">\(v_{1}\)</span> at a height <span class="arithmatex">\(h\)</span> above the center of a body with mass <span class="arithmatex">\(M\)</span> and radius <span class="arithmatex">\(R\)</span> is given by:</p>
+<div class="arithmatex">\[
+v_{1} = \sqrt{ \frac{GM}{R+h} }
+\]</div>
+<p>And, for an object on the surface <span class="arithmatex">\(h = 0\)</span>:</p>
+<div class="arithmatex">\[
+v_{1} = \sqrt{ \frac{GM}{R} }
+\]</div>
+<p>In this case, the mass of the moving body is negligible compared to the mass of the celestial body.</p>
+<h3 id="second-cosmic-velocity-escape-velocity">Second Cosmic Velocity (Escape Velocity)</h3>
+<blockquote>
+<p>The <strong>Second Cosmic Velocity</strong>, also known as the <strong>Escape Velocity</strong>, is the minimum velocity required for an object to break free from a celestial body's gravitational influence and enter space.</p>
+</blockquote>
+<p>The formula for the Escape Velocity <span class="arithmatex">\(v_{2}\)</span> is given by:</p>
+<div class="arithmatex">\[
+v_{2} = \sqrt{ \frac{2GM}{R} }
+\]</div>
+<h3 id="third-cosmic-velocity">Third Cosmic Velocity</h3>
+<blockquote>
+<p>The <strong>Third Cosmic Velocity</strong> is the speed required to leave the gravitational influence of a star, such as the Sun. This may also require additional energy to overcome the gravitational pull of other celestial bodies, such as planets.</p>
+</blockquote>
+<ul>
+<li>For the third cosmic velocity <span class="arithmatex">\(v_{3}\)</span>, it's calculated to escape the gravitational pull of the galaxy as well, and can be quite complex as it often depends on the system's dynamics. Generally, it can be expressed in relation to the escape velocity from the solar body's gravitational influence plus the additional velocity needed to overcome the stars in the galaxy.</li>
+</ul>
+<p>This velocity can be derived by combining the escape velocity from a planet with the necessary velocity to escape the Sun's gravity assuming you are already in orbit around that planet. The formula is:</p>
+<div class="arithmatex">\[
+v_3 = v_2 + v_{\text{orbital, Sun}}
+\]</div>
+<p>The orbital velocity of the Sum is given by:</p>
+<div class="arithmatex">\[
+v_{\text{orbital, Sun}} = \sqrt{\frac{GM_{Sun}}{D^2}}
+\]</div>
+<p>Where <span class="arithmatex">\(M_{Sun}\)</span> is the mass of the Sun, and <span class="arithmatex">\(D\)</span> is the distance from the Sun.</p>
+<h3 id="mathematical-derivation-and-parameters">Mathematical Derivation and Parameters</h3>
+<h3 id="deriving-the-first-cosmic-velocity">Deriving the First Cosmic Velocity</h3>
+<p>The gravitational force acting on an object is given by:</p>
+<p>$$
+F = \frac{GMm}{R^2}
+$$
+The centripetal force required to keep an object moving in a circular path is:</p>
+<p>$$
+F = \frac{mv^2}{R}
+$$
+Setting these two forces equal provides us the basis for our derivation of the first cosmic velocity:</p>
+<div class="arithmatex">\[
+\frac{GMm}{R^2} = \frac{mv^2}{R}
+\]</div>
+<p>Canceling <span class="arithmatex">\(m\)</span> and rearranging gives:</p>
+<div class="arithmatex">\[
+v_1^2 = \frac{GM}{R} \implies v_1 = \sqrt{\frac{GM}{R}}
+\]</div>
+<h3 id="deriving-the-second-cosmic-velocity">Deriving the Second Cosmic Velocity</h3>
+<p>For the second cosmic velocity, we can derive it from the conservation of energy. The total mechanical energy must be zero for an escape:</p>
+<div class="arithmatex">\[
+\frac{1}{2}mv^2 - \frac{GMm}{R} = 0 \implies v_2 = \sqrt{\frac{2GM}{R}}
+\]</div>
+<h3 id="parameters">Parameters</h3>
+<ul>
+<li>
+<p><strong>Gravitational Constant <span class="arithmatex">\(G\)</span></strong></p>
+<ul>
+<li><span class="arithmatex">\(G\approx6.674 \times 10^{-11}m^3kg^{-1}s^{-2}\)</span>;</li>
+</ul>
+</li>
+<li>
+<p><strong>Mass <span class="arithmatex">\(M\)</span></strong></p>
+<ul>
+<li>The mass of the celestial body.</li>
+<li>The higher the mass of a celestial body, the more energy it requires for an object to resist its gravitational field.</li>
+</ul>
+</li>
+<li>
+<p><strong>Radius <span class="arithmatex">\(R\)</span></strong>: The radius of the celestial body.</p>
+<ul>
+<li>The smaller the radius of a celestial body, the less energy it requires for an object to resist its gravitational field.</li>
+</ul>
+</li>
+<li>
+<p>The key parameters that affect cosmic velocities are the mass and radius of the celestial body.</p>
+</li>
+</ul>
+<h2 id="calculating-cosmic-velocities-for-different-celestial-bodies">Calculating Cosmic Velocities for Different Celestial Bodies</h2>
+<p>Let’s calculate these velocities for Earth, Mars, and Jupiter.</p>
+<table>
+<thead>
+<tr>
+<th>Parameter</th>
+<th>Earth</th>
+<th>Mars</th>
+<th>Jupiter</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Mass <span class="arithmatex">\(M\)</span></td>
+<td><span class="arithmatex">\(5.972 \times 10^{24}kg\)</span></td>
+<td><span class="arithmatex">\(6.4171×10^{23}kg\)</span></td>
+<td><span class="arithmatex">\(1.898×10^{27}kg\)</span></td>
+</tr>
+<tr>
+<td>Radius <span class="arithmatex">\(R\)</span></td>
+<td><span class="arithmatex">\(6.371×10^6m\)</span></td>
+<td><span class="arithmatex">\(3.3895×10^6m\)</span></td>
+<td><span class="arithmatex">\(6.9911×10^7m\)</span></td>
+</tr>
+<tr>
+<td>Orbital Velocity <span class="arithmatex">\(v_{1}\)</span></td>
+<td><span class="arithmatex">\(7909.6808\)</span> m/s</td>
+<td><span class="arithmatex">\(3554.7122\)</span> m/s</td>
+<td><span class="arithmatex">\(42567.5063\)</span> m/s</td>
+</tr>
+<tr>
+<td>Escape Velocity <span class="arithmatex">\(v_{2}\)</span></td>
+<td><span class="arithmatex">\(11185.9779\)</span> m/s</td>
+<td><span class="arithmatex">\(5027.1222\)</span> m/s</td>
+<td><span class="arithmatex">\(60199.5447\)</span> m/s</td>
+</tr>
+</tbody>
+</table>
+<pre><code class="language-Python">import math
+
+def cosmic_velocities(mass, radius):
+    G = 6.67430e-11  # Gravitational constant in m^3 kg^-1 s^-2
+    orbital = math.sqrt(G * mass / radius)
+    escape = math.sqrt(2 * G * mass / radius)
+    return [orbital, escape]
+
+# Define planet data: name, mass (in kg), radius (in meters)
+planets = [
+    {"name": "Earth", "mass": 5.972e24, "radius": 6.371e6},
+    {"name": "Mars", "mass": 6.4171e23, "radius": 3.3895e6},
+    {"name": "Jupiter", "mass": 1.898e27, "radius": 6.9911e7},
+    {"name": "Venus", "mass": 4.8675e24, "radius": 6.0518e6},
+    {"name": "Mercury", "mass": 3.3011e23, "radius": 2.4397e6}
+]
+
+for planet in planets:
+    velocities = cosmic_velocities(planet['mass'], planet['radius'])
+    v_orbital = velocities[0]
+    v_escape = velocities[1]
+    print(f'{planet['name']}:')
+    print(f'Orbital velocity: {v_orbital:.4f} m/s')
+    print(f'Escape velocity: {v_escape:.4f} m/s')
+    print()
+
+</code></pre>
+<pre><code>Earth:
+Orbital velocity: 7909.6808 m/s
+Escape velocity: 11185.9779 m/s
+
+Mars:
+Orbital velocity: 3554.7122 m/s
+Escape velocity: 5027.1222 m/s
+
+Jupiter:
+Orbital velocity: 42567.5063 m/s
+Escape velocity: 60199.5447 m/s
+
+Venus:
+Orbital velocity: 7326.7869 m/s
+Escape velocity: 10361.6414 m/s
+
+Mercury:
+Orbital velocity: 3005.1350 m/s
+Escape velocity: 4249.9027 m/s
+</code></pre>
+<h3 id="earth">Earth</h3>
+<p><strong>Orbital Velocity:</strong></p>
+<div class="arithmatex">\[
+v_1 = \sqrt{\frac{(6.674 \times 10^{-11})(5.972 \times 10^{24})}{6.371 \times 10^6}} \approx 7909.6808 \text{ m/s}
+\]</div>
+<p><strong>Escape Velocity:</strong></p>
+<p>$$
+v_2 = \sqrt{\frac{2 \times (6.674 \times 10^{-11})(5.972 \times 10^{24})}{6.371 \times 10^6}} \approx 11185.9779 \text{ m/s}</p>
+<p>$$</p>
+<h3 id="mars">Mars</h3>
+<p><strong>Orbital Velocity:</strong></p>
+<div class="arithmatex">\[
+v_1 = \sqrt{\frac{(6.674 \times 10^{-11})(6.4171 \times 10^{23})}{3.3895 \times 10^6}} \approx 3554.7122 \text{ m/s}
+\]</div>
+<p><strong>Escape Velocity:</strong></p>
+<div class="arithmatex">\[
+v_2 = \sqrt{\frac{2 \times (6.674 \times 10^{-11})(6.4171 \times 10^{23})}{3.3895 \times 10^6}} \approx 5027.1222 \text{ m/s}
+\]</div>
+<h3 id="jupiter">Jupiter</h3>
+<p><strong>Orbital Velocity:</strong></p>
+<div class="arithmatex">\[
+v_1 = \sqrt{\frac{(6.674 \times 10^{-11})(1.898 \times 10^{27})}{6.9911 \times 10^7}} \approx 42567.5063 \text{ m/s}
+\]</div>
+<p><strong>Escape Velocity:</strong></p>
+<div class="arithmatex">\[
+v_2 = \sqrt{\frac{2 \times (6.674 \times 10^{-11})(1.898 \times 10^{27})}{6.9911 \times 10^7}} \approx 60199.5447 \text{ m/s}
+\]</div>
+<h3 id="importance-in-space-exploration">Importance in Space Exploration</h3>
+<ul>
+<li>
+<p><strong>Launching Satellites</strong>: The first cosmic velocity (orbital velocity) is fundamental in placing satellites into stable orbits. Understanding it allows engineers to calculate the necessary thrust and trajectory to achieve the desired orbit.</p>
+</li>
+<li>
+<p><strong>Missions to Other Planets</strong>: The second cosmic velocity is critical for missions that need to escape Earth's gravity and travel to other celestial bodies. A spacecraft must achieve this velocity to leave Earth and enter interplanetary space.</p>
+</li>
+<li>
+<p><strong>Interstellar Travel</strong>: The third cosmic velocity gives insight into escaping a solar system's gravitational pull, which is essential for potential interstellar travel. Exploring technologies like nuclear propulsion or solar sails may eventually allow us to reach these speeds.</p>
+</li>
+</ul>
+<h2 id="circular-orbits">Circular orbits</h2>
+<pre><code class="language-Python">import numpy as np
+import matplotlib.pyplot as plt
+
+# Define celestial body parameters (radii in meters for visualization, scaled)
+celestial_bodies = {
+    'Sun': {'radius': 0.5, 'color': 'yellow'},
+    'Earth': {'radius': 1.0, 'color': 'blue'},
+    'Mars': {'radius': 1.5, 'color': 'red'},
+    'Jupiter': {'radius': 2.0, 'color': 'orange'},
+}
+
+# Create an array of angles for the circular orbits
+angles = np.linspace(0, 2 * np.pi, 360)
+
+# Create a plot
+plt.figure(figsize=(8, 8))
+plt.axis('equal')
+plt.xlim(-2.5, 2.5)
+plt.ylim(-2.5, 2.5)
+
+# Plot the Sun
+plt.scatter(0, 0, color=celestial_bodies['Sun']['color'], s=300, label='Sun')
+
+# Plot orbits and celestial bodies
+for body, params in celestial_bodies.items():
+    # Calculate x and y coordinates for the circular orbit
+    x_orbit = params['radius'] * np.cos(angles)
+    y_orbit = params['radius'] * np.sin(angles)
+
+    # Plot the orbit
+    plt.plot(x_orbit, y_orbit, linestyle='--', color='gray', alpha=0.5)
+
+    # Plot the celestial body at the perimeter of its orbit
+    plt.scatter(params['radius'], 0, color=params['color'], s=100, label=body)
+
+# Add labels and title
+plt.title('Circular Orbits of Celestial Bodies')
+plt.xlabel('Distance (arbitrary units)')
+plt.ylabel('Distance (arbitrary units)')
+plt.axhline(0, color='black',linewidth=0.5, ls='--')
+plt.axvline(0, color='black',linewidth=0.5, ls='--')
+plt.grid(color = 'gray', linestyle = '--', linewidth = 0.5)
+plt.legend()
+plt.show()
+</code></pre>
+<p><img alt="Pasted image 20250417130534" src="https://github.com/user-attachments/assets/ccf8ccc0-5e5e-48c2-87ed-35d0dc61f27e"/></p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
