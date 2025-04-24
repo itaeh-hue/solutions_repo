@@ -204,3 +204,91 @@ plt.show()
 
 
 ![trajectories](https://github.com/user-attachments/assets/8421fdf9-3ef5-4dd0-a9bf-ec7f062d5b0f)
+
+
+```Python
+
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
+
+# Constants
+mu = 3.986e14  # Earth's gravitational parameter (m^3/s^2)
+R_earth = 6371e3  # Earth's radius (m)
+altitude = 400e3  # Release altitude (m)
+r0 = R_earth + altitude  # Initial distance from Earth's center (m)
+
+# Initial conditions: tangential velocities (convert km/s to m/s)
+velocities_km = [5.5, 6, 7, 7.5, 8, 8.5, 9, 10, 11, 11.5]
+velocities = [v * 1000 for v in velocities_km]  # m/s
+
+# Simulation parameters
+dt = 10  # Time step (s)
+t_max = 3600 * 2  # Total simulation time (s) (2 hours)
+
+def compute_trajectory(v_tangential):
+    # Initial conditions
+    r = r0
+    theta = 0
+    v_r = 0  # Pure tangential release
+    v_theta = v_tangential
+    
+    # Storage
+    positions = []
+    
+    # Numerical integration (Euler method for simplicity)
+    for t in np.arange(0, t_max, dt):
+        # Store current position
+        x = r * np.cos(theta)
+        y = r * np.sin(theta)
+        positions.append((x, y))
+        
+        # Update angular momentum
+        h = r * v_theta
+        
+        # Update variables
+        r += v_r * dt
+        theta += (v_theta / r) * dt
+        v_r += (h**2 / r**3 - mu / r**2) * dt
+        v_theta += (-v_r * v_theta / r) * dt
+        
+        # Stop if crashed into Earth
+        if r <= R_earth:
+            break
+    
+    return np.array(positions)
+
+# Create figure
+plt.figure(figsize=(12, 12))
+ax = plt.gca()
+
+# Plot Earth
+earth = Circle((0, 0), R_earth, color='blue', alpha=0.3)
+ax.add_patch(earth)
+
+# Color map for trajectories
+cmap = plt.get_cmap('viridis')
+colors = [cmap(i/len(velocities)) for i in range(len(velocities))]
+
+# Compute and plot trajectories
+for i, v in enumerate(velocities):
+    traj = compute_trajectory(v)
+    plt.plot(traj[:, 0], traj[:, 1], 
+             color=colors[i],
+             label=f'{velocities_km[i]} km/s (ε={"+" if 0.5*v**2 - mu/r0 >0 else "-"})')
+
+# Formatting
+plt.title('Payload Trajectories from 400 km Altitude', pad=20)
+plt.xlabel('X Position (m)')
+plt.ylabel('Y Position (m)')
+plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
+plt.grid(True)
+plt.axis('equal')
+plt.tight_layout()
+plt.show()
+
+```
+![veloci](https://github.com/user-attachments/assets/f2f21cf8-d302-4eb3-8087-2544c5768eb9)
+
+
+
