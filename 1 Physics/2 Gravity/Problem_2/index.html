@@ -491,53 +491,6 @@ plt.tight_layout()
 plt.show()
 </code></pre>
 <p><img alt="dependency" src="https://github.com/user-attachments/assets/cc94d539-21ff-4605-8558-e5fd767148dd"/></p>
-<h2 id="circular-orbits">Circular orbits</h2>
-<pre><code class="language-Python">import numpy as np
-import matplotlib.pyplot as plt
-
-# Define celestial body parameters (radii in meters for visualization, scaled)
-celestial_bodies = {
-    'Sun': {'radius': 0.5, 'color': 'yellow'},
-    'Earth': {'radius': 1.0, 'color': 'blue'},
-    'Mars': {'radius': 1.5, 'color': 'red'},
-    'Jupiter': {'radius': 2.0, 'color': 'orange'},
-}
-
-# Create an array of angles for the circular orbits
-angles = np.linspace(0, 2 * np.pi, 360)
-
-# Create a plot
-plt.figure(figsize=(8, 8))
-plt.axis('equal')
-plt.xlim(-2.5, 2.5)
-plt.ylim(-2.5, 2.5)
-
-# Plot the Sun
-plt.scatter(0, 0, color=celestial_bodies['Sun']['color'], s=300, label='Sun')
-
-# Plot orbits and celestial bodies
-for body, params in celestial_bodies.items():
-    # Calculate x and y coordinates for the circular orbit
-    x_orbit = params['radius'] * np.cos(angles)
-    y_orbit = params['radius'] * np.sin(angles)
-
-    # Plot the orbit
-    plt.plot(x_orbit, y_orbit, linestyle='--', color='gray', alpha=0.5)
-
-    # Plot the celestial body at the perimeter of its orbit
-    plt.scatter(params['radius'], 0, color=params['color'], s=100, label=body)
-
-# Add labels and title
-plt.title('Circular Orbits of Celestial Bodies')
-plt.xlabel('Distance (arbitrary units)')
-plt.ylabel('Distance (arbitrary units)')
-plt.axhline(0, color='black',linewidth=0.5, ls='--')
-plt.axvline(0, color='black',linewidth=0.5, ls='--')
-plt.grid(color = 'gray', linestyle = '--', linewidth = 0.5)
-plt.legend()
-plt.show()
-</code></pre>
-<p><img alt="Pasted image 20250417130534" src="https://github.com/user-attachments/assets/ccf8ccc0-5e5e-48c2-87ed-35d0dc61f27e"/></p>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
