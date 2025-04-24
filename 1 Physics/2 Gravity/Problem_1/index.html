@@ -380,6 +380,240 @@ ani = animation.FuncAnimation(fig, update, frames=num_frames, interval=50, blit=
 plt.show()
 </code></pre>
 <p><img alt="orbits" src="https://github.com/user-attachments/assets/c215dd42-a03e-4fdb-be02-761ec0d88ea1"/></p>
+<h2 id="plot-t3-vs-r3">Plot T^3 vs r^3</h2>
+<pre><code class="language-Python">import matplotlib.pyplot as plt
+import numpy as np
+
+# Data for Mercury, Venus, Earth, Mars
+planets = ['Mercury', 'Venus', 'Earth', 'Mars']
+T = np.array([0.241, 0.615, 1.000, 1.881])  # Orbital period in years
+r = np.array([0.387, 0.723, 1.000, 1.524])  # Semi-major axis in AU
+
+T2 = T**2
+r3 = r**3
+
+plt.figure(figsize=(7, 5))
+plt.scatter(r3, T2, color='royalblue')
+
+# Annotate each planet
+for i, planet in enumerate(planets):
+    plt.annotate(planet, (r3[i], T2[i]), textcoords="offset points", xytext=(5,5), ha='left')
+
+# Plot y=x line for reference (since T^2 = r^3 in AU and years)
+x = np.linspace(0, 4, 100)
+plt.plot(x, x, 'k--', label=r'$T^2 = r^3$')
+
+plt.xlabel(r'$r^3$ (AU$^3$)')
+plt.ylabel(r'$T^2$ (yr$^2$)')
+plt.title(r'Kepler\'s Third Law: $T^2$ vs $r^3$ for Inner Planets')
+plt.legend()
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p>[Uploading---
+created: 2025-04-24 12:55:58</p>
+<hr/>
+<p>Analyzing the possible trajectories of a payload released near Earth requires a careful consideration of the initial conditions and the forces acting on it. A simple "parabolic" trajectory, often taught in introductory physics, is a <em>simplified</em> approximation. The real trajectory can be elliptical, hyperbolic, or even a complex combination depending on the payload's initial velocity vector relative to the Earth.</p>
+<h3 id="step-1-defining-the-physical-context">Step 1: Defining the Physical Context</h3>
+<p>The motion of a payload released from a moving rocket near Earth is governed by gravity and the initial velocity imparted by the rocket. The possible trajectories follow conic sections:</p>
+<ul>
+<li><strong>Elliptical</strong> (bound orbit)</li>
+<li><strong>Parabolic</strong> (escape trajectory)    </li>
+<li><strong>Hyperbolic</strong> (unbound trajectory)</li>
+</ul>
+<p>The trajectory classification depends on the <strong>specific energy</strong> of the payload:</p>
+<div class="arithmatex">\[
+\varepsilon = \frac{v^2}{2} - \frac{\mu}{r}
+\]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\(v\)</span> is the velocity magnitude,</li>
+<li><span class="arithmatex">\(μ=GM\)</span> is Earth's standard gravitational parameter (<span class="arithmatex">\(G\)</span> is the gravitational constant, <span class="arithmatex">\(M\)</span> is Earth's mass),</li>
+<li><span class="arithmatex">\(r\)</span> is the initial radial distance from Earth's center.</li>
+</ul>
+<p>The conditions for trajectory classification:</p>
+<ul>
+<li><strong>Bound Elliptical Orbit</strong>: <span class="arithmatex">\(\varepsilon &lt; 0\)</span></li>
+<li><strong>Parabolic Escape</strong>: <span class="arithmatex">\(\varepsilon = 0\)</span> </li>
+<li><strong>Hyperbolic Escape</strong>: <span class="arithmatex">\(ε&gt;0\)</span></li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>Energy Condition</th>
+<th>Eccentricity</th>
+<th>Trajectory</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="arithmatex">\(ε&lt;0\)</span></td>
+<td><span class="arithmatex">\(0≤e&lt;1\)</span></td>
+<td>Elliptical</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(ε=0\)</span></td>
+<td><span class="arithmatex">\(e=1\)</span></td>
+<td>Parabolic</td>
+</tr>
+<tr>
+<td><span class="arithmatex">\(ε&gt;0\)</span></td>
+<td><span class="arithmatex">\(e&gt;1\)</span></td>
+<td>Hyperbolic</td>
+</tr>
+</tbody>
+</table>
+<h3 id="step-2-equations-of-motion">Step 2: Equations of Motion</h3>
+<p>Newton's Law of Gravitation governs the payload’s acceleration:</p>
+<div class="arithmatex">\[
+\mathbf{a} = -\frac{\mu}{r^2} \hat{r}
+\]</div>
+<p>where <span class="arithmatex">\(\hat{r}\)</span> is the unit vector pointing radially outward.</p>
+<p>The velocity components in a general two-dimensional orbital plane are:</p>
+<div class="arithmatex">\[
+\frac{dv_r}{dt} = \frac{h^2}{r^3} - \frac{\mu}{r^2}
+\]</div>
+<div class="arithmatex">\[
+\frac{dv_\theta}{dt} = -\frac{v_r v_\theta}{r}
+\]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\(h=rv_{\theta}\)</span> is the specific angular momentum,</li>
+<li><span class="arithmatex">\(v_r\)</span> and <span class="arithmatex">\(v_\theta\)</span> are the radial and tangential velocity components.</li>
+</ul>
+<h3 id="step-3-computing-the-trajectory-numerically">Step 3: Computing the Trajectory Numerically</h3>
+<p>For numerical simulations, we use <strong>orbital integration</strong> based on the discretized equations:</p>
+<ol>
+<li>Define initial conditions:</li>
+</ol>
+<div class="arithmatex">\[
+r_0,\quad v_r0,\quad v_\theta0
+\]</div>
+<ol>
+<li>Time-step integration using numerical methods (e.g., Runge-Kutta): </li>
+</ol>
+<div class="arithmatex">\[
+r_{n+1} = r_n + v_{rn} \Delta t
+\]</div>
+<div class="arithmatex">\[
+v_{rn+1} = v_{rn} + \left(\frac{h_n^2}{r_n^3} - \frac{\mu}{r_n^2} \right) \Delta t
+\]</div>
+<div class="arithmatex">\[
+v_{\theta n+1} = v_{\theta n} - \frac{v_{rn} v_{\theta n}}{r_n} \Delta t
+\]</div>
+<h3 id="step-4-applications-and-implications">Step 4: Applications and Implications</h3>
+<ul>
+<li>
+<p><strong>Orbital Insertion</strong>: If the payload is released with the right speed and direction, it can be placed in a stable orbit.</p>
+</li>
+<li>
+<p><strong>Reentry Scenarios</strong>: If the speed is low and the altitude is not high enough, it will <strong>fall back to Earth</strong> due to drag.</p>
+</li>
+<li>
+<p><strong>Escape Trajectory</strong>: If <span class="arithmatex">\(v \geq v_{\text{escape}}\)</span>, the payload will enter an unbound trajectory, escaping Earth’s gravitational influence.</p>
+</li>
+</ul>
+<p>Escape velocity is given by:</p>
+<div class="arithmatex">\[
+v_{\text{escape}} = \sqrt{\frac{2\mu}{r}}
+\]</div>
+<p>For a release near <strong>Low Earth Orbit (~400 km altitude, r ≈ 6778 km)</strong>:</p>
+<div class="arithmatex">\[
+v_{\text{escape}} \approx 11.2 \text{ km/s}
+\]</div>
+<h2 id="computational-model">Computational model</h2>
+<pre><code class="language-Python">import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import Circle
+
+# Constants
+G = 6.67430e-11  # m^3 kg^-1 s^-2
+M = 5.972e24     # kg
+R_earth = 6.371e6  # m
+mu = G * M
+
+# Initial conditions (release point)
+r0 = R_earth + 400e3  # 400 km altitude
+theta0 = 0
+
+def compute_trajectory(v0, theta0, max_time=3e4, dt=60):
+    """Compute trajectory using polar coordinate equations"""
+    # Initial state vector [r, theta, vr, vtheta]
+    state = np.array([r0, theta0, 
+                      v0 * np.sin(theta0), 
+                      v0 * np.cos(theta0) / r0])
+
+    # Storage
+    positions = []
+
+    # Time stepping
+    for t in np.arange(0, max_time, dt):
+        r, theta, vr, vtheta = state
+
+        # Store position (convert to Cartesian)
+        x = r * np.cos(theta)
+        y = r * np.sin(theta)
+        positions.append((x, y))
+
+        # Break if collision occurs
+        if r &lt;= R_earth:
+            break
+
+        # Derivatives
+        drdt = vr
+        dthetadt = vtheta
+        dvrdt = r * vtheta**2 - mu/r**2
+        dvthetadt = -2 * vr * vtheta / r
+
+        # Euler integration (for simplicity - use RK4 for real missions)
+        state = state + np.array([drdt, dthetadt, dvrdt, dvthetadt]) * dt
+
+    return np.array(positions)
+
+# Velocity thresholds
+v_circular = np.sqrt(mu/r0)
+v_escape = np.sqrt(2*mu/r0)
+
+# Compute trajectories
+elliptical_traj = compute_trajectory(0.9 * v_escape, np.pi/4)
+parabolic_traj = compute_trajectory(v_escape, np.pi/4)
+hyperbolic_traj = compute_trajectory(1.1 * v_escape, np.pi/4)
+
+# Plotting
+plt.figure(figsize=(10, 8))
+ax = plt.gca()
+
+# Earth
+earth = Circle((0, 0), R_earth, color='#1f77b4', alpha=0.9)
+ax.add_patch(earth)
+
+# Trajectories
+plt.plot(elliptical_traj[:,0], elliptical_traj[:,1], 'g-', 
+         label=f'Elliptical ($v_0 = 0.9v_{{esc}}$ = {0.9*v_escape/1000:.1f} km/s)')
+plt.plot(parabolic_traj[:,0], parabolic_traj[:,1], 'b--', 
+         label=f'Parabolic ($v_0 = v_{{esc}}$ = {v_escape/1000:.1f} km/s)')
+plt.plot(hyperbolic_traj[:,0], hyperbolic_traj[:,1], 'r:', 
+         label=f'Hyperbolic ($v_0 = 1.1v_{{esc}}$ = {1.1*v_escape/1000:.1f} km/s)')
+
+# Release point
+plt.plot(r0 * np.cos(np.pi/4), r0 * np.sin(np.pi/4), 'k*', markersize=15)
+
+# Formatting
+plt.title('Payload Trajectories from 400 km Altitude', pad=20)
+plt.xlabel('X Position (m)')
+plt.ylabel('Y Position (m)')
+plt.legend(loc='upper right')
+plt.grid(True)
+plt.axis('equal')
+plt.xlim(-10*r0, 10*r0)
+plt.ylim(-10*r0, 10*r0)
+
+plt.tight_layout()
+plt.show()
+
+</code></pre>
+<p><img alt="t_2_r3" src="https://github.com/user-attachments/assets/144f6ce5-2fa2-427f-9994-83d6b3987222"/></p>
 <h2 id="circular-orbits">Circular orbits</h2>
 <pre><code class="language-Python">import numpy as np
 import matplotlib.pyplot as plt
