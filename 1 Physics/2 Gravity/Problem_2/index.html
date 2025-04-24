@@ -395,6 +395,102 @@ v_2 = \sqrt{\frac{2 \times (6.674 \times 10^{-11})(1.898 \times 10^{27})}{6.9911
 <p><strong>Interstellar Travel</strong>: The third cosmic velocity gives insight into escaping a solar system's gravitational pull, which is essential for potential interstellar travel. Exploring technologies like nuclear propulsion or solar sails may eventually allow us to reach these speeds.</p>
 </li>
 </ul>
+<h2 id="dependency-graph">Dependency graph</h2>
+<p>Dependency graph:</p>
+<pre><code class="language-Python">import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Constants
+G = 6.67430e-11  # Gravitational constant
+M_sun = 1.989e30  # Mass of the Sun (needed for orbital calculations)
+
+# Planet data
+planets = pd.DataFrame({
+    'name': ['Earth', 'Mars', 'Jupiter'],
+    'radius': [6.371e6, 3.389e6, 6.9911e7],
+    'mass': [5.972e24, 6.417e23, 1.898e27]
+})
+
+# Create orbital velocity vs. radius graph
+orbital_velocities = []
+for radius in planets['radius']:
+    orbital_velocities.append(np.sqrt(G * M_sun / radius))
+planets['orbital_velocity'] = orbital_velocities
+
+
+# Create escape velocity vs. radius graph
+escape_velocities_radius = []
+for radius in planets['radius']:
+    escape_velocities_radius.append(np.sqrt(2 * G * M_sun / radius))
+planets['escape_velocity_radius'] = escape_velocities_radius
+
+# Create orbital velocity vs. mass graph
+orbital_velocities_mass=[]
+for mass in planets['mass']:
+    orbital_velocities_mass.append(np.sqrt(G*M_sun/planets['radius'].iloc[planets['mass'].values == mass].values))
+
+planets['orbital_velocity_mass'] = orbital_velocities_mass
+
+
+# Create escape velocity vs. mass graph
+escape_velocities_mass = []
+for mass in planets['mass']:
+    escape_velocities_mass.append(np.sqrt(2 * G * mass / planets['radius'].iloc[planets['mass'].values == mass].values))
+
+planets['escape_velocity_mass'] = escape_velocities_mass
+
+
+# Plotting
+fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+fig.suptitle('Orbital and Escape Velocities vs. Planet Properties')
+
+axes[0, 0].plot(planets['radius'], planets['orbital_velocity'], marker='o')
+axes[0, 0].set_xlabel('Planet Radius (m)')
+axes[0, 0].set_ylabel('Orbital Velocity (m/s)')
+axes[0, 0].set_title('Orbital Velocity vs. Planet Radius')
+axes[0, 0].set_xscale('log')
+axes[0, 0].set_yscale('log')
+axes[0, 0].grid(True)
+for i, row in planets.iterrows():
+  axes[0, 0].annotate(row['name'], (row['radius'], row['orbital_velocity']))
+axes[0,0].set_xticks(planets['radius'].values)
+
+axes[0, 1].plot(planets['mass'], planets['orbital_velocity_mass'], marker='o')
+axes[0, 1].set_xlabel('Planet Mass (kg)')
+axes[0, 1].set_ylabel('Orbital Velocity (m/s)')
+axes[0, 1].set_title('Orbital Velocity vs. Planet Mass')
+axes[0, 1].set_xscale('log')
+axes[0, 1].set_yscale('log')
+axes[0, 1].grid(True)
+for i, row in planets.iterrows():
+    axes[0, 1].annotate(row['name'], (row['mass'], row['orbital_velocity_mass']))
+
+
+axes[1, 0].plot(planets['radius'], planets['escape_velocity_radius'], marker='o')
+axes[1, 0].set_xlabel('Planet Radius (m)')
+axes[1, 0].set_ylabel('Escape Velocity (m/s)')
+axes[1, 0].set_title('Escape Velocity vs. Planet Radius')
+axes[1, 0].set_xscale('log')
+axes[1, 0].set_yscale('log')
+axes[1, 0].grid(True)
+for i, row in planets.iterrows():
+    axes[1, 0].annotate(row['name'], (row['radius'], row['escape_velocity_radius']))
+
+axes[1, 1].plot(planets['mass'], planets['escape_velocity_mass'], marker='o')
+axes[1, 1].set_xlabel('Planet Mass (kg)')
+axes[1, 1].set_ylabel('Escape Velocity (m/s)')
+axes[1, 1].set_title('Escape Velocity vs. Planet Mass')
+axes[1, 1].set_xscale('log')
+axes[1, 1].set_yscale('log')
+axes[1, 1].grid(True)
+for i, row in planets.iterrows():
+    axes[1, 1].annotate(row['name'], (row['mass'], row['escape_velocity_mass']))
+
+plt.tight_layout()
+plt.show()
+</code></pre>
+<p><img alt="dependency" src="https://github.com/user-attachments/assets/cc94d539-21ff-4605-8558-e5fd767148dd"/></p>
 <h2 id="circular-orbits">Circular orbits</h2>
 <pre><code class="language-Python">import numpy as np
 import matplotlib.pyplot as plt
