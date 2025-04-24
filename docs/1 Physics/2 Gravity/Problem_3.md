@@ -201,4 +201,6 @@ plt.tight_layout()
 plt.show()
 
 ```
-[🖉trajectories_of_a_freely_released_payload_near_Earth.md](https://github.com/user-attachments/files/19889842/trajectories_of_a_freely_released_payload_near_Earth.md)
+
+
+![trajectories](https://github.com/user-attachments/assets/8421fdf9-3ef5-4dd0-a9bf-ec7f062d5b0f)
