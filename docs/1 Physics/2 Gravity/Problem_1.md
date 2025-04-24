@@ -27,6 +27,7 @@ Alright, let's start with the [Newton's law of universal gravitation](https://en
 $$
 F = G \frac{mM}{r^2}
 $$
+
 where:
 
 | Notion | Description                                                                                              |
@@ -43,6 +44,7 @@ Thanks to the Kepler's first law, we know that the motion of one planet (this is
 $$
 F_{c} = \frac{mv^2}{r}
 $$
+
 For circular motion, the gravitational force provides the centripetal force, so we can set these two expressions equal:
 
 
