@@ -66,6 +66,22 @@
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#theory">Theory</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#methodology">Methodology</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#interference-formed-on-the-water-surface-due-to-the-superposition-of-waves-emitted-from-point-sources-placed-at-the-vertices-of-a-square">Interference formed on the water surface due to the superposition of waves emitted from point sources placed at the vertices of a square</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#2d-python-visualization">2D Python visualization</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#3d-python-visualization">3D Python visualization</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#results-and-discussion">Results and Discussion</a>
+<ul>
+<li class="toctree-l4"><a class="reference internal" href="#interference-pattern-formation">Interference pattern formation</a>
+</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -172,6 +188,218 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<h2 id="theory">Theory</h2>
+<p>A circular wave from a single point source located at <span class="arithmatex">\((x_0, y_0)\)</span> on the water surface is described by the displacement function:</p>
+<div class="arithmatex">\[
+\eta(x, y, t) = \frac{A}{\sqrt{r}} \cos\left(kr - \omega t + \phi\right)
+\]</div>
+<p>where:</p>
+<ul>
+<li><span class="arithmatex">\(\eta(x, y, t)\)</span> is the displacement at point <span class="arithmatex">\((x, y)\)</span> and time <span class="arithmatex">\(t\)</span>,</li>
+<li><span class="arithmatex">\(A\)</span> is the amplitude,</li>
+<li><span class="arithmatex">\(r = \sqrt{(x - x_0)^2 + (y - y_0)^2}\)</span> is the distance from the source,</li>
+<li><span class="arithmatex">\(k = \frac{2\pi}{\lambda}\)</span> is the wave number,</li>
+<li><span class="arithmatex">\(\omega = 2\pi f\)</span> is the angular frequency,</li>
+<li><span class="arithmatex">\(\phi\)</span> is the initial phase.</li>
+</ul>
+<p>For <span class="arithmatex">\(N\)</span> sources placed at vertices <span class="arithmatex">\(\{(x_i, y_i)\}_{i=1}^N\)</span> of a regular polygon, the total displacement is given by the superposition principle:</p>
+<div class="arithmatex">\[
+\eta_{\text{sum}}(x, y, t) = \sum_{i=1}^N \frac{A}{\sqrt{r_i}} \cos\left(k r_i - \omega t + \phi_i\right)
+\]</div>
+<p>where <span class="arithmatex">\(r_i = \sqrt{(x - x_i)^2 + (y - y_i)^2}\)</span>.</p>
+<ul>
+<li>When multiple sources emit waves, the total displacement at any point is the <strong>sum</strong> of the individual waves (superposition principle). </li>
+<li>For <strong>steady-state</strong> visualization, we often fix a specific time (like <span class="arithmatex">\(t=0\)</span>) and sum the wave contributions at that instant.</li>
+</ul>
+<p>Constructive interference occurs where waves arrive in phase, amplifying displacement; destructive interference occurs where waves are out of phase, reducing or canceling displacement.</p>
+<h2 id="methodology">Methodology</h2>
+<ol>
+<li><strong>Select Polygon:</strong> Choose a regular polygon (e.g., equilateral triangle, square, pentagon).</li>
+<li><strong>Source Placement:</strong> Calculate vertices coordinates assuming a circumradius <span class="arithmatex">\(R\)</span>.</li>
+<li><strong>Parameters:</strong> Set amplitude <span class="arithmatex">\(A\)</span>, wavelength <span class="arithmatex">\(\lambda\)</span>, frequency <span class="arithmatex">\(f\)</span>, and initial phases <span class="arithmatex">\(\phi_i=0\)</span> (coherent sources).</li>
+<li><strong>Grid:</strong> Define a 2D spatial grid <span class="arithmatex">\((x,y)\)</span> covering the region around the polygon.</li>
+<li><strong>Compute Displacement:</strong> For each point on the grid and fixed time <span class="arithmatex">\(t\)</span>, compute <span class="arithmatex">\(\eta_{\text{sum}}(x,y,t)\)</span>.</li>
+<li><strong>Visualization:</strong> Plot the resulting interference pattern as a 3D surface showing displacement amplitude using Matplotlib.</li>
+</ol>
+<h2 id="interference-formed-on-the-water-surface-due-to-the-superposition-of-waves-emitted-from-point-sources-placed-at-the-vertices-of-a-square">Interference formed on the water surface due to the superposition of waves emitted from point sources placed at the vertices of a square</h2>
+<p>As an example, we will take a square at the vertices of which the waves will be emitted. </p>
+<p>Given <span class="arithmatex">\(N=4\)</span> sources located at vertices of a square, the total displacement will be:
+$$
+\eta_{\text{total}}(x, y, t) = \sum_{i=1}^4 \eta_i(x, y, t)
+$$</p>
+<p>Since we're interested in the steady-state interference pattern, we often consider the superimposed wave at a fixed time <span class="arithmatex">\(t=0\)</span>:</p>
+<div class="arithmatex">\[
+\eta_{\text{total}}(x, y) = \sum_{i=1}^4 \frac{A}{\sqrt{r_i}} \cos\left(k r_i + \phi_i\right)
+\]</div>
+<h2 id="2d-python-visualization">2D Python visualization</h2>
+<p>Below is the code that visualizes interference of waves formed on the water surface due to the superposition of waves emitted from point sources placed at the vertices of a square:</p>
+<pre><code class="language-Python">import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+A = 1.0             # Amplitude
+L = 10.0            # Side length of the square
+lambda_wave = 2.0   # Wavelength
+f = 1.0             # Frequency in Hz
+phi = 0             # Initial phase
+
+# Derived parameters
+k = 2 * np.pi / lambda_wave
+omega = 2 * np.pi * f
+
+# Source positions (vertices of the square)
+half_L = L / 2
+sources = [
+    (-half_L, -half_L),  # bottom-left
+    (half_L, -half_L),   # bottom-right
+    (half_L, half_L),    # top-right
+    (-half_L, half_L)    # top-left
+]
+
+# Create a grid over the region
+grid_size = 200  # resolution of the grid
+x = np.linspace(-L, L, grid_size)
+y = np.linspace(-L, L, grid_size)
+X, Y = np.meshgrid(x, y)
+
+# Compute the superposed wave at t=0
+eta_total = np.zeros_like(X)
+
+for (x_i, y_i) in sources:
+    r = np.sqrt((X - x_i)**2 + (Y - y_i)**2) + 1e-6  # add small term to avoid division by zero
+    eta_i = (A / np.sqrt(r)) * np.cos(k * r + phi)
+    eta_total += eta_i
+
+# Plotting
+plt.figure(figsize=(8, 6))
+contour = plt.contourf(X, Y, eta_total, levels=100, cmap='viridis')
+plt.colorbar(contour, label='Wave Displacement')
+plt.title('Interference Pattern from 4 Water Wave Sources (Square Configuration)')
+plt.xlabel('x')
+plt.ylabel('y')
+
+# Plot source points
+for (x_i, y_i) in sources:
+    plt.plot(x_i, y_i, 'ro')  # source positions
+
+plt.grid(True)
+plt.axis('equal')
+plt.show()
+</code></pre>
+<p>Here is the 2D graph output:</p>
+<p><img alt="wave_4_sources" src="https://github.com/user-attachments/assets/27da1a4c-080c-4406-a21f-3e3d452282f6"/></p>
+<p>Link on <code>matplotlib.online</code>: https://share.matplotlib.online/3fd83dc9eb7e4d3abb484fc9faaf9841</p>
+<h2 id="3d-python-visualization">3D Python visualization</h2>
+<p>The next script illustrates the same interference as above, but in a 3D graph:</p>
+<pre><code class="language-Python">import numpy as np
+import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
+
+# Parameters
+A = 1.0             # Amplitude
+L = 10.0            # Side length of the square
+lambda_wave = 2.0   # Wavelength
+f = 1.0             # Frequency in Hz
+phi = 0             # Initial phase
+
+# Derived parameters
+k = 2 * np.pi / lambda_wave
+omega = 2 * np.pi * f
+
+# Source positions (vertices of the square)
+half_L = L / 2
+sources = [
+    (-half_L, -half_L),  # bottom-left
+    (half_L, -half_L),   # bottom-right
+    (half_L, half_L),    # top-right
+    (-half_L, half_L)    # top-left
+]
+
+# Create a grid over the region
+grid_size = 200
+x = np.linspace(-L, L, grid_size)
+y = np.linspace(-L, L, grid_size)
+X, Y = np.meshgrid(x, y)
+
+# Compute the superposed wave at t=0
+eta_total = np.zeros_like(X)
+
+for (x_i, y_i) in sources:
+    r = np.sqrt((X - x_i)**2 + (Y - y_i)**2) + 1e-6
+    eta_i = (A / np.sqrt(r)) * np.cos(k * r + phi)
+    eta_total += eta_i
+
+# Plotting the 3D surface
+fig = plt.figure(figsize=(10, 8))
+ax = fig.add_subplot(111, projection='3d')
+
+# Plot the surface
+surf = ax.plot_surface(X, Y, eta_total, cmap='viridis', linewidth=0, antialiased=False)
+
+# Add color bar to indicate amplitude
+fig.colorbar(surf, shrink=0.5, aspect=10, label='Wave Displacement')
+
+# Title and labels
+ax.set_title('3D Interference Pattern from 4 Water Wave Sources (Square Configuration)')
+ax.set_xlabel('x')
+ax.set_ylabel('y')
+ax.set_zlabel('Displacement')
+
+# Plot source points for reference
+for (x_i, y_i) in sources:
+    ax.scatter(x_i, y_i, 0, color='red', s=50)
+
+plt.show()
+</code></pre>
+<p>Here is the graph output:</p>
+<p><img alt="wave_4_sources_3D" src="https://github.com/user-attachments/assets/48c0f595-524b-4923-bca2-031078b00805"/></p>
+<h2 id="results-and-discussion">Results and Discussion</h2>
+<p>When multiple wave sources emit waves simultaneously, the resulting wave at any point on the water surface is the sum of the individual waves from each source. This principle, known as <strong>superposition</strong>, leads to regions of:</p>
+<ul>
+<li><strong>Constructive interference</strong>: where wave crests align, resulting in higher amplitude peaks.</li>
+<li><strong>Destructive interference</strong>: where a crest from one wave aligns with a trough from another, canceling each other out or reducing amplitude.</li>
+</ul>
+<p>The pattern of these high and low amplitude regions depends on the relative phase and amplitude of the waves arriving at each point.</p>
+<p>In our setup:</p>
+<ul>
+<li>Four sources are placed at the vertices of a square.</li>
+<li>Each source emits circular waves with the same amplitude, wavelength, and frequency.</li>
+<li>The waves propagate outward in all directions.</li>
+</ul>
+<p>Key factors:</p>
+<ul>
+<li><strong>Distance from each source</strong>: the phase of each wave at a point depends on the distance <span class="arithmatex">\(r_{i}\)</span> from source <span class="arithmatex">\(i\)</span>.</li>
+<li><strong>Wave phase</strong>: determined by <span class="arithmatex">\(kr_i\)</span>, where <span class="arithmatex">\(k = \frac{2\pi}{\lambda}\)</span></li>
+</ul>
+<h3 id="interference-pattern-formation">Interference pattern formation</h3>
+<p><strong>Near the sources:</strong></p>
+<ul>
+<li>Close to a source, the wave amplitude is large, and the pattern is dominated by the local wavefronts emanating from that source.</li>
+<li>The wavefronts are roughly circular, and superposition creates concentric interference fringes.</li>
+</ul>
+<p><strong>At the center of the square:</strong></p>
+<ul>
+<li>The center point of the square is equidistant from all four sources.</li>
+<li>Because of symmetry, the waves from each source arrive in phase (assuming initial phases are zero).</li>
+<li><strong>Result</strong>: <strong>Constructive interference</strong> occurs at the center, producing a bright, high-amplitude region.</li>
+</ul>
+<p><strong>Along the diagonals and edges:</strong></p>
+<ul>
+<li>At points along the diagonals, the distances to opposing sources are equal.</li>
+<li>The waves from these sources tend to arrive in phase, creating regular interference fringes.</li>
+<li>At points where phase differences are significant (due to differing distances), partial cancellation or reinforcement occurs, producing a pattern of alternating high and low amplitude regions.</li>
+</ul>
+<p><strong>Far from the sources:</strong></p>
+<ul>
+<li>As the distance increases, the wavefronts spread out, and interference patterns become more complex.</li>
+<li>The superposition results in a grid-like pattern of bright spots (constructive interference) and dark regions (destructive interference).</li>
+</ul>
+<p><strong>Interpretation:</strong></p>
+<ul>
+<li>The pattern results from the <strong>phase differences</strong> between waves arriving at each point.</li>
+<li>When the phase difference is an integer multiple of <span class="arithmatex">\(2\pi\)</span>, waves reinforce each other (constructive interference).</li>
+<li>When the phase difference is an odd multiple of <span class="arithmatex">\(\pi\)</span>, waves cancel out (destructive interference).</li>
+</ul>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
