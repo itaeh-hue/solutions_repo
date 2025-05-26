@@ -78,6 +78,16 @@
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#equivalent-resistance">Equivalent resistance</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#approach-overview">Approach Overview</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#theoretical-background">Theoretical background</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#algorithm-outline">Algorithm outline</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#implementation">Implementation</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -172,6 +182,142 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<h2 id="equivalent-resistance">Equivalent resistance</h2>
+<blockquote>
+<p><strong>Equivalent resistance</strong> is the total resistance measured in a parallel or series circuit, either for the whole circuit or a part of it.</p>
+</blockquote>
+<p>Equivalent resistance is defined between two terminals or nodes of the network and represents the total effect of all resistors in the circuit.</p>
+<blockquote>
+<p>The formula for equivalent resistance <span class="arithmatex">\(R_{eq}\)</span>  in a <strong>parallel</strong> combination is expressed as:</p>
+</blockquote>
+<div class="arithmatex">\[
+\frac{1}{R_{eq}} = \frac{1}{R_{1}} + \frac{1}{R_{2}} + \dots + \frac{1}{R_{n}}
+\]</div>
+<p>where <span class="arithmatex">\(R_i\)</span> indicates the resistance of the <span class="arithmatex">\(i_{th}\)</span> resistor. </p>
+<blockquote>
+<p>The formula for equivalent resistance <span class="arithmatex">\(R_{eq}\)</span> in a <strong>series</strong> combination is expressed as:</p>
+</blockquote>
+<div class="arithmatex">\[
+R_{eq} = R_{1} + R_{2} + \dots + R_{n}
+\]</div>
+<p>where <span class="arithmatex">\(R_i\)</span> indicates the resistance of the <span class="arithmatex">\(i_{th}\)</span> resistor. </p>
+<p><img alt="Pasted image 20250526210631" src="https://github.com/user-attachments/assets/cdcd6bbd-eca5-4410-b783-3f0287512543"/></p>
+<h2 id="approach-overview">Approach Overview</h2>
+<ol>
+<li><strong>Graph Representation</strong></li>
+<li>Nodes represent circuit junctions.</li>
+<li>
+<p>Edges represent resistors with resistance values as weights.</p>
+</li>
+<li>
+<p><strong>Simplification Strategy</strong></p>
+</li>
+<li>Detect and merge series resistors (resistors connected end-to-end).</li>
+<li>Detect and combine parallel resistors (resistors connected between the same two nodes).</li>
+<li>
+<p>Repeat until the circuit reduces to a single equivalent resistor.</p>
+</li>
+<li>
+<p><strong>Implementation Tools</strong></p>
+</li>
+<li>Use the <code>networkx</code> library for graph manipulation.</li>
+<li>Use depth-first search (DFS) to identify series chains.</li>
+<li>Use graph analysis to find parallel connections, especially cycles.</li>
+</ol>
+<h2 id="theoretical-background">Theoretical background</h2>
+<blockquote>
+<p>Circuit as a graph:</p>
+</blockquote>
+<p>We will represent the circuit as a <strong>unidirected weighted graph</strong> <span class="arithmatex">\(G = (V, E)\)</span>, where vertices <span class="arithmatex">\(V\)</span> are circuit nodes and edges (links) <span class="arithmatex">\(E\)</span> are resistors with weights equal to resistance values.</p>
+<blockquote>
+<p>Series and parallel reductions:</p>
+</blockquote>
+<ul>
+<li><em>Series:</em> Two edges connected end-to-end with a single intermediate node of degree 2 can be replaced by a single edge with resistance equal to the sum of the two resistors.</li>
+<li><em>Parallel:</em> Multiple edges connecting the same pair of nodes can be replaced by a single edge with resistance given by the reciprocal of the sum of reciprocals (conductances).</li>
+</ul>
+<blockquote>
+<p>Graph simplification approach:</p>
+</blockquote>
+<p>Iteratively detect and reduce series chains and parallel edges until the graph reduces to a single equivalent resistor between the two nodes of interest.</p>
+<p>For complex circuits, graph spectral methods and matrix formulations involving the Laplacian matrix can be used to compute effective resistance, but iterative simplification is more intuitive and suitable for programming.</p>
+<h2 id="algorithm-outline">Algorithm outline</h2>
+<ol>
+<li><strong>Input</strong>: Graph <span class="arithmatex">\(G\)</span> with nodes and weighted edges (resistances), and two nodes <span class="arithmatex">\(s\)</span> and <span class="arithmatex">\(t\)</span> between which equivalent resistance is required.</li>
+<li><strong>Preprocessing:</strong><ul>
+<li>Remove any isolated nodes not connected to <span class="arithmatex">\(s\)</span> or <span class="arithmatex">\(t\)</span>.        </li>
+<li>Identify series chains: nodes with degree <span class="arithmatex">\(2\)</span> not equal to <span class="arithmatex">\(s\)</span> or <span class="arithmatex">\(t\)</span>.</li>
+<li>Identify parallel edges between the same nodes.</li>
+</ul>
+</li>
+<li><strong>Iterative Simplification:</strong><ul>
+<li>Replace series chains by single edges with summed resistance.</li>
+<li>Replace parallel edges by single edges with combined resistance using parallel formula:</li>
+</ul>
+</li>
+</ol>
+<p>$$
+R_{eq} = \left( \sum_{i} \frac{1}{R_{i}}  \right)^{-1}
+$$
+- Repeat until only one edge remains between <span class="arithmatex">\(s\)</span> and <span class="arithmatex">\(t\)</span>.</p>
+<h2 id="implementation">Implementation</h2>
+<pre><code class="language-Python">import networkx as nx
+
+def equivalent_resistance(graph, node_start, node_end):
+    G = graph.copy()
+
+    # Helper function to combine parallel edges
+    def combine_parallel_edges(G):
+        for u, v in list(G.edges()):
+            edges = list(G.get_edge_data(u, v).values()) if G.is_multigraph() else [G[u][v]]
+            if len(edges) &gt; 1:
+                # Calculate combined parallel resistance
+                combined_resistance = 1 / sum(1 / e['resistance'] for e in edges)
+                # Remove all parallel edges and add one combined edge
+                G.remove_edges_from([(u, v)] * len(edges))
+                G.add_edge(u, v, resistance=combined_resistance)
+        return G
+
+    # Helper function to reduce series chains
+    def reduce_series(G):
+        for node in list(G.nodes()):
+            if node in (node_start, node_end):
+                continue
+            if G.degree(node) == 2:
+                neighbors = list(G.neighbors(node))
+                r1 = G[node][neighbors[0]]['resistance']
+                r2 = G[node][neighbors[1]]['resistance']
+                new_resistance = r1 + r2
+                G.add_edge(neighbors[0], neighbors[1], resistance=new_resistance)
+                G.remove_node(node)
+                return G, True
+        return G, False
+
+    # Iterative simplification
+    changed = True
+    while changed:
+        G = combine_parallel_edges(G)
+        G, changed = reduce_series(G)
+
+    # After simplification, the equivalent resistance is the resistance of the edge between node_start and node_end
+    if G.has_edge(node_start, node_end):
+        return G[node_start][node_end]['resistance']
+    else:
+        return None  # No path between nodes
+
+# Example usage:
+# Create a graph with resistors as edges
+G = nx.Graph()
+G.add_edge('A', 'B', resistance=100)
+G.add_edge('B', 'C', resistance=200)
+G.add_edge('A', 'C', resistance=300)
+
+req = equivalent_resistance(G, 'A', 'C')
+print(f"Equivalent resistance between A and C: {req} Ω")
+</code></pre>
+<p>Output:</p>
+<pre><code class="language-bash">Equivalent resistance between A and C: 300 Ω
+</code></pre>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
