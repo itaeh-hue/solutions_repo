@@ -195,6 +195,9 @@ Here is the graph output:
 
 ![wave_4_sources_3D](https://github.com/user-attachments/assets/48c0f595-524b-4923-bca2-031078b00805)
 
+Animation:
+![3d_visualization](https://github.com/user-attachments/assets/fcb14137-d406-4f77-b634-c4680a131d26)
+
 
 
 ## Results and Discussion
