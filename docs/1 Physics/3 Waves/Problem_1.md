@@ -117,6 +117,10 @@ Here is the 2D graph output:
 
 ![wave_4_sources](https://github.com/user-attachments/assets/27da1a4c-080c-4406-a21f-3e3d452282f6)
 
+Animated:
+
+![animated_2d](https://github.com/user-attachments/assets/f4f4af70-592f-4465-a1e4-432b597557fe)
+
 
 
 Link on `matplotlib.online`: https://share.matplotlib.online/3fd83dc9eb7e4d3abb484fc9faaf9841
