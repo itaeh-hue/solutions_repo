@@ -84,6 +84,10 @@
 <ul class="current">
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 1</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#but-first-formulas">But first, formulas</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#visualization">Visualization</a>
+</li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../Problem_2/">Problem 2</a>
@@ -172,6 +176,100 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-1">Problem 1</h1>
+<p>The <strong>Central Limit Theorem (CLT)</strong> is a fundamental concept in probability and statistics. It states that the <strong>distribution of the sample mean approaches a normal distribution as the sample size increases</strong>, regardless of the original population's distribution, provided the population has a finite variance.</p>
+<blockquote>
+<p>The <strong>Central Limit Theorem (CLT)</strong> is fundamental in probability and statistics, asserting that <strong>the sampling distribution of the sample mean tends toward a normal distribution as the sample size increases, regardless of the original distribution</strong>. </p>
+</blockquote>
+<p>Simulations are powerful tools to visualize and understand this phenomenon intuitively.</p>
+<p>To illustrate the CLT, we'll consider three types:</p>
+<ul>
+<li>Uniform distribution</li>
+<li>Exponential distribution</li>
+<li>Binomial distribution</li>
+</ul>
+<h2 id="but-first-formulas">But first, formulas</h2>
+<p>Let <span class="arithmatex">\(X_1, X_2, \ldots, X_n\)</span>​ be <strong>independent</strong> and <strong>identically distributed</strong> random variables with:</p>
+<ul>
+<li>Mean <span class="arithmatex">\(\mu = E[X_i]\)</span></li>
+<li>Variance <span class="arithmatex">\(\sigma^2 = \operatorname{Var}(X_i)\)</span></li>
+</ul>
+<p>The sample mean is defined as:</p>
+<div class="arithmatex">\[
+\bar{X}_n = \frac{1}{n} \sum_{i=1}^{n} X_i
+\]</div>
+<p>As <span class="arithmatex">\(n\to \infty\)</span>, the distribution of the standardized sample mean approaches a standard normal distribution:</p>
+<p>$$
+Z = \frac{\bar{X}_n - \mu}{\sigma / \sqrt{n}} \xrightarrow{d} N(0,1)
+$$
+- The <strong>mean</strong> of the sampling distribution of the sample mean is <span class="arithmatex">\(\mu\)</span>.
+- The <strong>standard deviation</strong> (standard error) of the sampling distribution is:</p>
+<div class="arithmatex">\[
+\text{Standard Error} = \frac{\sigma}{\sqrt{n}}
+\]</div>
+<h2 id="visualization">Visualization</h2>
+<pre><code class="language-Python">import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Generate populations
+population_size = 10000
+uniform_population = np.random.uniform(0, 1, population_size)
+exponential_population = np.random.exponential(1, population_size)
+binomial_population = np.random.binomial(10, 0.5, population_size)
+
+def sample_means(population, sample_size, num_samples):
+    means = []
+    for _ in range(num_samples):
+        sample = np.random.choice(population, size=sample_size, replace=False)
+        means.append(np.mean(sample))
+    return means
+
+sample_sizes = [5, 10, 30, 50]
+num_samples = 1000
+sns.set(style='whitegrid')
+
+for dist_name, population in zip(['Uniform', 'Exponential', 'Binomial'],
+                                 [uniform_population, exponential_population, binomial_population]):
+    plt.figure(figsize=(12, 8))
+    for i, size in enumerate(sample_sizes):
+        means = sample_means(population, size, num_samples)
+        plt.subplot(2, 2, i+1)
+        sns.histplot(means, kde=True, bins=30)
+        plt.title(f'{dist_name} Distribution\nSample size = {size}')
+        plt.xlabel('Sample Mean')
+        plt.ylabel('Frequency')
+    plt.tight_layout()
+    plt.show()
+</code></pre>
+<ul>
+<li>For small <span class="arithmatex">\(n\)</span>, the distribution of <span class="arithmatex">\(\bar{X}_n\)</span> reflects the original population's shape.</li>
+<li>As <span class="arithmatex">\(n\)</span> increases, the distribution of <span class="arithmatex">\(\bar{X}_n\)</span>​ becomes increasingly normal, regardless of the population's original distribution.</li>
+</ul>
+<p><img alt="graph1" src="https://github.com/user-attachments/assets/6fef4535-25da-4e4d-9fa2-59391273d286"/>
+<img alt="graph2" src="https://github.com/user-attachments/assets/4afba020-675e-49ff-97a0-4c5e0a3ee304"/>
+<img alt="graph3" src="https://github.com/user-attachments/assets/4aa4780a-5ec8-48ed-8f75-c15a13210a88"/></p>
+<p>The histograms and density curves shown in the plots illustrate the distribution of the <strong>sample means</strong> obtained from repeatedly sampling the population distributions with different sample sizes. Specifically:</p>
+<ul>
+<li>
+<p><strong>For small sample sizes (e.g., 5, 10):</strong> </p>
+<ul>
+<li>The distribution of sample means tends to mirror the shape of the original population distribution. For example, if the population is skewed (like the exponential distribution), the sample mean distribution will be similarly skewed.</li>
+</ul>
+</li>
+<li>
+<p><strong>As the sample size increases (e.g., 30, 50):</strong> </p>
+<ul>
+<li>The distribution of the sample means becomes increasingly <strong>more symmetric and bell-shaped</strong>, approaching a <strong>normal distribution</strong>. This visualizes the essence of the Central Limit Theorem (CLT), which states that regardless of the original distribution's shape, the sampling distribution of the mean tends toward normality as the sample size grows.</li>
+</ul>
+</li>
+<li>
+<p><strong>Key observations:</strong></p>
+<ul>
+<li>The spread (variance) of the sampling distribution decreases with larger sample sizes, indicating more precise estimates of the population mean.</li>
+<li>The convergence to a normal distribution occurs more rapidly for distributions with smaller variance or less skewness.</li>
+</ul>
+</li>
+</ul>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
