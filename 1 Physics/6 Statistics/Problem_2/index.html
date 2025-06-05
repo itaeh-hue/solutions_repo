@@ -86,6 +86,10 @@
 </li>
 <li class="toctree-l2 current"><a class="reference internal current" href="#">Problem 2</a>
 <ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="#part-1">Part 1</a>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#part-2">Part 2</a>
+</li>
 </ul>
 </li>
 </ul>
@@ -172,6 +176,179 @@
 <div class="document" itemscope="itemscope" itemtype="http://schema.org/Article" role="main">
 <div class="section" itemprop="articleBody">
 <h1 id="problem-2">Problem 2</h1>
+<h3 id="part-1">Part 1</h3>
+<p>The Monte Carlo method estimates π by leveraging the ratio of points falling inside a circle to the total number of points randomly generated within a square that bounds the circle.</p>
+<ul>
+<li>For a unit circle (radius = 1) centered at the origin, the area is <span class="arithmatex">\(π·r^2 = π\)</span>. The area of the bounding square (with sides of length 2, from -1 to 1) is 4.</li>
+<li>If we randomly generate points uniformly within the square, the probability that a point falls inside the circle is the ratio of the circle's area to the square's area:</li>
+</ul>
+<div class="arithmatex">\[
+P=\frac{\text{Area of square}}{\text{Area of circle}}=\frac{4}{π}
+\]</div>
+<ul>
+<li>If <span class="arithmatex">\(N_{in}\)</span> is the number of points inside the circle and <span class="arithmatex">\(N_{total}\)</span> is the total number of points, then</li>
+</ul>
+<div class="arithmatex">\[
+\frac{N_{in}}{N_{total}} \approx \frac{\pi}{4} \implies \pi \approx 4 \cdot \frac{N_{in}}{N_{total}}
+\]</div>
+<p>Let's visualize this:</p>
+<ul>
+<li><a href="">Link to <code>matplotlib.online</code></a></li>
+</ul>
+<pre><code class="language-Python">import numpy as np
+import matplotlib.pyplot as plt
+
+# Parameters
+N = 10000  # Number of points
+
+# Generate random points in [-1, 1] x [-1, 1]
+x = np.random.uniform(-1, 1, N)
+y = np.random.uniform(-1, 1, N)
+
+# Check which points are inside the unit circle
+inside = x**2 + y**2 &lt;= 1
+N_in = np.sum(inside)
+
+# Estimate pi
+pi_estimate = 4 * N_in / N
+print(f"Estimated π: {pi_estimate}")
+
+plt.figure(figsize=(6, 6))
+plt.scatter(x[inside], y[inside], color='blue', s=1, label='Inside Circle')
+plt.scatter(x[~inside], y[~inside], color='red', s=1, label='Outside Circle')
+circle = plt.Circle((0, 0), 1, color='black', fill=False, linewidth=2)
+plt.gca().add_patch(circle)
+plt.xlim([-1, 1])
+plt.ylim([-1, 1])
+plt.gca().set_aspect('equal')
+plt.legend()
+plt.title('Monte Carlo Estimation of π')
+plt.show()
+</code></pre>
+<p><img alt="pi_circle" src="https://github.com/user-attachments/assets/2ee43e46-6744-4d8d-8d8a-d24d52543273"/></p>
+<pre><code class="language-Python">Estimated π: 3.1716
+</code></pre>
+<ul>
+<li>As the number of points increases, the estimate of <span class="arithmatex">\(π\)</span> converges to the true value.</li>
+<li>The error decreases as <span class="arithmatex">\(\frac{1}{\sqrt{ N }}\)</span>, characteristic of Monte Carlo methods.</li>
+<li>The method is simple but converges slowly compared to some deterministic algorithms.</li>
+</ul>
+<h3 id="part-2">Part 2</h3>
+<p>Buffon’s Needle is a classic probability problem for estimating <span class="arithmatex">\(π\)</span>:</p>
+<ul>
+<li>Parallel lines are drawn on a plane, spaced a distance <span class="arithmatex">\(d\)</span> apart. A needle of length <span class="arithmatex">\(l \leq d\)</span> is dropped randomly onto the plane.</li>
+</ul>
+<p><img alt="Pasted image 20250605124731" src="https://github.com/user-attachments/assets/ae520ef4-b57b-4c48-b130-916736ece60e"/></p>
+<ul>
+<li>The probability <span class="arithmatex">\(P\)</span> that the needle crossed the line is:</li>
+</ul>
+<div class="arithmatex">\[
+P = \frac{2l}{\pi d}
+\]</div>
+<ul>
+<li>If the needle is dropped <span class="arithmatex">\(N\)</span> times and crossed a line <span class="arithmatex">\(N_{c}\)</span> times, then:</li>
+</ul>
+<div class="arithmatex">\[
+\pi \approx \frac{2lN}{dN_{c}}
+\]</div>
+<p>A great visualization can also be found <a href="https://www.ventrella.com/Buffon/">here</a>.</p>
+<p>Let's visualize this ourselves:</p>
+<pre><code class="language-Python">import numpy as np
+import matplotlib.pyplot as plt
+
+# Set parameters
+d = 1.0  # Distance between parallel lines
+l = 0.8  # Length of the needle (less than or equal to d)
+N = 5000  # Number of needle drops
+
+# Seed for reproducibility
+np.random.seed(42)
+
+# Generate random positions of the needle centers (x, y)
+# Since the lines are horizontal and spaced by d, y positions are uniformly distributed within [0, d]
+x_centers = np.random.uniform(0, 10*d, N)  # x can be anywhere, but for visualization, limit to some range
+y_centers = np.random.uniform(0, d, N)
+
+# Generate random orientations: angles between 0 and pi
+angles = np.random.uniform(0, np.pi, N)
+
+# Calculate the endpoints of each needle
+# Half-length components
+dx = (l / 2) * np.cos(angles)
+dy = (l / 2) * np.sin(angles)
+
+# Needle endpoints
+x_start = x_centers - dx
+x_end = x_centers + dx
+y_start = y_centers - dy
+y_end = y_centers + dy
+
+# Check if each needle crosses a line
+# Since lines are at y = 0, d, 2d, etc., check if the needle crosses any line
+# For each needle, check if the lines y=0 and y=d are crossed
+crossings = []
+
+for y1, y2 in zip(y_start, y_end):
+    # The line crosses the needle if the segment between y1 and y2 crosses y=0 or y=d
+    crosses = ((y1 &lt; 0 and y2 &gt; 0) or (y1 &gt; 0 and y2 &lt; 0) or
+               (y1 &lt; d and y2 &gt; d) or (y1 &gt; d and y2 &lt; d))
+    crossings.append(crosses)
+
+crossings = np.array(crossings)
+N_cross = np.sum(crossings)
+
+# Estimate pi
+# From the probability P = 2l / (pi * d), rearranged as pi ≈ 2lN / (d Nc)
+pi_estimate = (2 * l * N) / (d * N_cross) if N_cross &gt; 0 else np.nan
+
+# --- Visualization ---
+
+fig, ax = plt.subplots(figsize=(10, 6))
+
+# Plot the parallel lines
+for line_idx in range(int(np.max(y_end) // d) + 2):
+    y_line = line_idx * d
+    ax.plot([-1, 11 * d], [y_line, y_line], 'k-', linewidth=1)
+
+# Plot needles
+# Needles that crossed the lines in red, others in blue
+ax.plot([x_start[crossings], x_end[crossings]], [y_start[crossings], y_end[crossings]],
+        'r-', linewidth=0.8, label='Crossed line' if line_idx == 0 else "")
+ax.plot([x_start[~crossings], x_end[~crossings]], [y_start[~crossings], y_end[~crossings]],
+        'b-', linewidth=0.8, label='Did not cross' if line_idx == 0 else "")
+
+# Setting plot limits
+ax.set_xlim(-d, 11 * d)
+ax.set_ylim(-0.5, max(y_end) + 0.5)
+
+ax.set_title(f"Buffon's Needle Simulation: Approximate Pi = {pi_estimate:.4f}")
+ax.set_xlabel("X position")
+ax.set_ylabel("Y position")
+ax.legend()
+
+plt.show()
+</code></pre>
+<ul>
+<li><span class="arithmatex">\(N=5000\)</span>:</li>
+</ul>
+<p><img alt="needle" src="https://github.com/user-attachments/assets/a4404d97-dd23-4e98-bede-e2d80ca5018d"/></p>
+<ul>
+<li>Increasing <code>N</code> improves the approximation.</li>
+</ul>
+<p><span class="arithmatex">\(N=100\)</span>:</p>
+<p><img alt="n100" src="https://github.com/user-attachments/assets/d2bfeb49-e623-4b37-bb3a-c8fa17e7ab5e"/></p>
+<p><span class="arithmatex">\(N=500\)</span>:</p>
+<p><img alt="n500" src="https://github.com/user-attachments/assets/b389015e-bda6-4233-a8f9-5d6add80a467"/></p>
+<p><span class="arithmatex">\(N=1000\)</span>:</p>
+<p><img alt="n1000" src="https://github.com/user-attachments/assets/01bb9d6f-edca-4d11-9806-f131fde23020"/></p>
+<ul>
+<li>We can adjust <code>l</code> and <code>d</code> to see how the estimate varies:</li>
+</ul>
+<p>Same as above, but <span class="arithmatex">\(d=2.0\)</span>, and <span class="arithmatex">\(l=1.5\)</span>:
+<img alt="changleld" src="https://github.com/user-attachments/assets/8f89da1b-8950-4f5a-af99-392eb6ad6405"/></p>
+<ul>
+<li>The visualization helps understand the random placement and crossing behavior.</li>
+</ul>
 </div>
 </div><footer>
 <div aria-label="Footer Navigation" class="rst-footer-buttons" role="navigation">
